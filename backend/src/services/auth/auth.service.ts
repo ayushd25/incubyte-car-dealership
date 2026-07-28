@@ -1,6 +1,7 @@
 import { User } from "../../models/user.model";
 import { AppError } from "../../errors/AppError";
 import { generateToken } from "../../utils/jwt";
+import { buildAuthResponse } from "../../utils/authResponse";
 
 interface RegisterUserInput {
   name: string;
@@ -33,17 +34,45 @@ export const registerUser = async ({
     user.role
   );
 
-  return {
-    success: true,
-    message: "User registered successfully",
-    data: {
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      token,
-    },
-  };
+  return buildAuthResponse(
+  user,
+  token,
+  "User registered successfully"
+);
+};
+
+import bcrypt from "bcrypt";
+
+export const loginUser = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  const isPasswordValid = await bcrypt.compare(
+    password,
+    user.password
+  );
+
+  if (!isPasswordValid) {
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  const token = generateToken(
+    user._id.toString(),
+    user.role
+  );
+
+  return buildAuthResponse(
+  user,
+  token,
+  "Login successful"
+);
 };

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 export const generateToken = (
   userId: string,
   role: string
