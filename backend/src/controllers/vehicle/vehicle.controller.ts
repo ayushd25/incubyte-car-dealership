@@ -6,6 +6,7 @@ import {
   updateVehicle,
   deleteVehicle,
   purchaseVehicle,
+restockVehicle,
 } from "../../services/vehicle/vehicle.service";
 import { catchAsync } from "../../utils/catchAsync";
 
@@ -60,6 +61,15 @@ export const remove = catchAsync(async (req, res) => {
 
 export const purchase = catchAsync(async (req, res) => {
   const result = await purchaseVehicle(req.params.id as string);
+
+  return res.status(200).json(result);
+});
+
+export const restock = catchAsync(async (req, res) => {
+  const result = await restockVehicle(
+    req.params.id as string,
+    req.body.quantity
+  );
 
   return res.status(200).json(result);
 });

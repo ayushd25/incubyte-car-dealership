@@ -7,7 +7,7 @@ import {
   getById,
   update,
   remove,
-  purchase,
+  purchase, restock
 } from "../controllers/vehicle/vehicle.controller";
 import { authenticate } from "../middlewares/auth.middleware";
 import { validate } from "../middlewares/validate";
@@ -38,6 +38,11 @@ router.post(
   "/:id/purchase",
   authenticate,
   purchase
+);
+router.post(
+  "/:id/restock",
+  authenticate,
+  restock
 );
 
 router.delete("/:id", authenticate, remove);

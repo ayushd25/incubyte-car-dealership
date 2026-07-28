@@ -153,3 +153,39 @@ export const purchaseVehicle = async (id: string) => {
     data: vehicle,
   };
 };
+
+export const restockVehicle = async (
+  id: string,
+  quantity: number
+) => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new AppError("Invalid vehicle id", 400);
+  }
+
+  if (quantity <= 0) {
+    throw new AppError(
+      "Restock quantity must be greater than zero",
+      400
+    );
+  }
+
+  const vehicle = await Vehicle.findById(id);
+
+  if (!vehicle) {
+    throw new AppError("Vehicle not found", 404);
+  }
+
+  vehicle.quantity += quantity;
+
+  if (vehicle.quantity > 0) {
+    vehicle.status = "available";
+  }
+
+  await vehicle.save();
+
+  return {
+    success: true,
+    message: "Vehicle restocked successfully",
+    data: vehicle,
+  };
+};
