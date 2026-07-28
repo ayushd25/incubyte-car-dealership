@@ -1,0 +1,45 @@
+import request from "supertest";
+import app from "../../app";
+
+describe("GET /api/vehicles/:id", () => {
+  it("should return a vehicle by id", async () => {
+    const registerResponse = await request(app)
+      .post("/api/auth/register")
+      .send({
+        name: "Ayush",
+        email: "vehicleid@test.com",
+        password: "password123",
+      });
+
+    const token = registerResponse.body.data.token;
+
+    const createResponse = await request(app)
+      .post("/api/vehicles")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        make: "Toyota",
+        model: "Fortuner",
+        year: 2023,
+        price: 4200000,
+        mileage: 12000,
+        fuelType: "Diesel",
+        transmission: "Automatic",
+        color: "Black",
+        vin: "VIN-GET-001",
+      });
+
+    const vehicleId = createResponse.body.data._id;
+
+    const response = await request(app)
+      .get(`/api/vehicles/${vehicleId}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+
+    expect(response.body.success).toBe(true);
+
+    expect(response.body.data._id).toBe(vehicleId);
+
+    expect(response.body.data.make).toBe("Toyota");
+  });
+});

@@ -24,3 +24,12 @@ export const getVehicles = async () => {
     data: vehicles,
   };
 };
+
+export const getVehicleById = async (id: string) => {
+  const vehicle = await Vehicle.findById(id);
+
+  return {
+    success: true,
+    data: vehicle,
+  };
+};
