@@ -28,6 +28,8 @@ describe("PATCH /api/vehicles/:id", () => {
         transmission: "Automatic",
         color: "White",
         vin: "UPDATEVIN123456789",
+        category: "SUV",
+quantity: 10,
       });
 
     const vehicleId = createResponse.body.data._id;

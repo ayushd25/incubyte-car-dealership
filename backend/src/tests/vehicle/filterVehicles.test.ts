@@ -26,6 +26,8 @@ describe("GET /api/vehicles with filters", () => {
         transmission: "Automatic",
         color: "Black",
         vin: "FILTERVIN111111111",
+         category: "SUV",
+quantity: 10,
       });
 
     await request(app)
@@ -41,6 +43,8 @@ describe("GET /api/vehicles with filters", () => {
         transmission: "Manual",
         color: "White",
         vin: "FILTERVIN222222222",
+        category: "SUV",
+quantity: 10,
       });
 
     const response = await request(app)

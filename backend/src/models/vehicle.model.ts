@@ -51,6 +51,25 @@ const vehicleSchema = new Schema(
       ref: "User",
       required: true,
     },
+    category: {
+  type: String,
+  required: true,
+  enum: [
+    "SUV",
+    "Sedan",
+    "Hatchback",
+    "Truck",
+    "Coupe",
+    "Convertible",
+  ],
+},
+
+quantity: {
+  type: Number,
+  required: true,
+  min: 0,
+  default: 0,
+},
   },
   {
     timestamps: true,

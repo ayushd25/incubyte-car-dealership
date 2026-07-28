@@ -26,6 +26,8 @@ describe("GET /api/vehicles?make=Toyota", () => {
         transmission: "Automatic",
         color: "Black",
         vin: "SEARCHVIN111111111",
+        category: "SUV",
+quantity: 10,
       });
 
     await request(app)
@@ -41,6 +43,8 @@ describe("GET /api/vehicles?make=Toyota", () => {
         transmission: "Manual",
         color: "White",
         vin: "SEARCHVIN222222222",
+        category: "SUV",
+quantity: 10,
       });
 
     const response = await request(app)

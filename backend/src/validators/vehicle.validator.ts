@@ -10,6 +10,16 @@ export const createVehicleSchema = z.object({
   transmission: z.string().min(1),
   color: z.string().min(1),
   vin: z.string().min(1),
+  category: z.enum([
+  "SUV",
+  "Sedan",
+  "Hatchback",
+  "Truck",
+  "Coupe",
+  "Convertible",
+]),
+
+quantity: z.number().int().min(0),
 });
 export const updateVehicleSchema =
   createVehicleSchema.partial();

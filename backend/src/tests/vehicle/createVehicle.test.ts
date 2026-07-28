@@ -15,15 +15,18 @@ describe("POST /api/vehicles", () => {
     const token = registerResponse.body.data.token;
 
     const payload = {
-      make: "Toyota",
-      model: "Fortuner",
-      year: 2023,
-      price: 4200000,
-      mileage: 15000,
-      fuelType: "Diesel",
-      transmission: "Automatic",
-      color: "Black",
-      vin: "VIN123456789",
+       make: "Toyota",
+    model: "Fortuner",
+    year: 2023,
+    price: 35000,
+    mileage: 12000,
+    fuelType: "Diesel",
+    transmission: "Automatic",
+    color: "Black",
+    vin: "123456789",
+
+    category: "SUV",
+    quantity: 10,
     };
 
     const response = await request(app)
@@ -40,5 +43,7 @@ describe("POST /api/vehicles", () => {
     expect(response.body.data.model).toBe(payload.model);
 
     expect(response.body.data.status).toBe("available");
+    expect(response.body.data.category).toBe("SUV");
+expect(response.body.data.quantity).toBe(10);
   });
 });

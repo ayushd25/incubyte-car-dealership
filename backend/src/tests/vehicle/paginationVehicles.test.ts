@@ -27,6 +27,8 @@ describe("GET /api/vehicles pagination", () => {
           transmission: "Manual",
           color: "White",
           vin: `PAGINATIONVIN00000000${i}`,
+          category: "SUV",
+quantity: 10,
         });
     }
 

@@ -26,6 +26,8 @@ describe("DELETE /api/vehicles/:id", () => {
         transmission: "Automatic",
         color: "Black",
         vin: "DELETEVIN123456789",
+        category: "SUV",
+quantity: 10,
       });
 
     const vehicleId = createResponse.body.data._id;

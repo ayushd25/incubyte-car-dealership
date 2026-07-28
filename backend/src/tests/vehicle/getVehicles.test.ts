@@ -26,6 +26,8 @@ describe("GET /api/vehicles", () => {
         transmission: "Automatic",
         color: "Black",
         vin: "VIN111111",
+        category: "SUV",
+quantity: 10,
       });
 
     const response = await request(app)

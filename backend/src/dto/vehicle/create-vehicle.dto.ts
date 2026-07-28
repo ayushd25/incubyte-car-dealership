@@ -8,4 +8,7 @@ export interface CreateVehicleDto {
   transmission: string;
   color: string;
   vin: string;
+
+  category: string;
+  quantity: number;
 }

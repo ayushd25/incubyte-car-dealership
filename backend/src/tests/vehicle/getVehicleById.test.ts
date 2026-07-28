@@ -27,6 +27,8 @@ describe("GET /api/vehicles/:id", () => {
         transmission: "Automatic",
         color: "Black",
         vin: "VIN-GET-001",
+        category: "SUV",
+quantity: 10,
       });
 
     const vehicleId = createResponse.body.data._id;
@@ -69,6 +71,7 @@ it("should return 404 when vehicle does not exist", async () => {
       name: "Ayush",
       email: "notfound@test.com",
       password: "password123",
+      
     });
 
   const token = registerResponse.body.data.token;
