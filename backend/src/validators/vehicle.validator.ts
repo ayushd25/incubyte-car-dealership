@@ -11,3 +11,5 @@ export const createVehicleSchema = z.object({
   color: z.string().min(1),
   vin: z.string().min(1),
 });
+export const updateVehicleSchema =
+  createVehicleSchema.partial();

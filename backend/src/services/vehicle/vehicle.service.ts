@@ -1,9 +1,13 @@
 import { Types } from "mongoose";
 import { AppError } from "../../errors/AppError";
 import { Vehicle } from "../../models/vehicle.model";
+import {
+  CreateVehicleDto,
+  UpdateVehicleDto,
+} from "../../dto/vehicle/vehicle.dto";
 
 export const createVehicle = async (
-  data: any,
+  data: CreateVehicleDto,
   userId: string
 ) => {
   const vehicle = await Vehicle.create({
@@ -46,7 +50,7 @@ export const getVehicleById = async (id: string) => {
 
 export const updateVehicle = async (
   id: string,
-  data: any
+  data: UpdateVehicleDto
 ) => {
   if (!Types.ObjectId.isValid(id)) {
     throw new AppError("Invalid vehicle id", 400);

@@ -6,31 +6,11 @@ import {
 } from "../controllers/vehicle/vehicle.controller";
 import { authenticate } from "../middlewares/auth.middleware";
 import { validate } from "../middlewares/validate";
-import { createVehicleSchema } from "../validators/vehicle.validator";
-
-const router = Router();
-router.patch(
-  "/:id",
-  authenticate,
-  update
-);
-
-router.delete(
-  "/:id",
-  authenticate,
-  remove
-);
-router.get(
-  "/:id",
-  authenticate,
-  getById
-);
-
-router.get(
-  "/",
-  authenticate,
-  getAll
-);
+import {
+  createVehicleSchema,
+  updateVehicleSchema,
+} from "../validators/vehicle.validator";
+import router from "./auth.routes";
 
 router.post(
   "/",
@@ -38,5 +18,18 @@ router.post(
   validate(createVehicleSchema),
   create
 );
+
+router.get("/", authenticate, getAll);
+
+router.get("/:id", authenticate, getById);
+
+router.patch(
+  "/:id",
+  authenticate,
+  validate(updateVehicleSchema),
+  update
+);
+
+router.delete("/:id", authenticate, remove);
 
 export default router;
