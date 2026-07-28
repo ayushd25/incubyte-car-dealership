@@ -5,8 +5,10 @@ module.exports = {
   roots: ["<rootDir>/src"],
 
   testMatch: ["**/tests/**/*.test.ts"],
+  setupFilesAfterEnv: ["<rootDir>/src/tests/setup.ts"],
 
   moduleFileExtensions: ["ts", "js", "json"],
+  
 
   collectCoverageFrom: [
     "src/**/*.ts",
