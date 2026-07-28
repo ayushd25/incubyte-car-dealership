@@ -15,3 +15,12 @@ export const createVehicle = async (
     data: vehicle,
   };
 };
+
+export const getVehicles = async () => {
+  const vehicles = await Vehicle.find().sort({ createdAt: -1 });
+
+  return {
+    success: true,
+    data: vehicles,
+  };
+};
