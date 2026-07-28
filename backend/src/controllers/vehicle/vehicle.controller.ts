@@ -15,12 +15,13 @@ export const create = catchAsync(async (req: Request, res: Response) => {
   return res.status(201).json(result);
 });
 
-export const getAll = catchAsync(async (_req, res) => {
-  const result = await getVehicles();
+export const getAll = catchAsync(async (req, res) => {
+  const result = await getVehicles({
+    make: req.query.make as string,
+  });
 
   return res.status(200).json(result);
 });
-
 export const getById = catchAsync(async (req, res) => {
   const id = req.params.id as string;
 

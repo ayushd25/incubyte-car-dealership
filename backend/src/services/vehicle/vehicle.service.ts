@@ -22,15 +22,22 @@ export const createVehicle = async (
   };
 };
 
-export const getVehicles = async () => {
-  const vehicles = await Vehicle.find().sort({ createdAt: -1 });
+export const getVehicles = async (
+  filters: { make?: string }
+) => {
+  const query: Record<string, unknown> = {};
+
+  if (filters.make) {
+    query.make = filters.make;
+  }
+
+  const vehicles = await Vehicle.find(query);
 
   return {
     success: true,
     data: vehicles,
   };
 };
-
 export const getVehicleById = async (id: string) => {
   if (!Types.ObjectId.isValid(id)) {
     throw new AppError("Invalid vehicle id", 400);
@@ -92,3 +99,4 @@ export const deleteVehicle = async (id: string) => {
     message: "Vehicle deleted successfully",
   };
 };
+
