@@ -11,8 +11,18 @@ export const register = catchAsync(async (req: Request, res: Response) => {
   return res.status(201).json(result);
 });
 
-export const login = catchAsync(async (req, res) => {
+export const login = catchAsync(async (req: Request, res: Response) => {
   const response = await loginUser(req.body);
 
-  res.status(200).json(response);
+  return res.status(200).json(response);
 });
+
+export const getCurrentUser = (
+  req: Request,
+  res: Response
+) => {
+  return res.status(200).json({
+    success: true,
+    data: req.user,
+  });
+};

@@ -1,5 +1,14 @@
 import jwt from "jsonwebtoken";
 
+import { env } from "../config/env";
+
+export const verifyToken = (token: string) => {
+  return jwt.verify(token, env.jwtSecret) as {
+    id: string;
+    role: string;
+  };
+};
+
 export const generateToken = (
   userId: string,
   role: string

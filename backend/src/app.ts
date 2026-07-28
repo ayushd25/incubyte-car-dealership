@@ -7,6 +7,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { errorHandler } from "./middlewares/errorHandler";
+import vehicleRoutes from "./routes/vehicle.routes";
 
 const app = express();
 
@@ -22,12 +23,16 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 app.use("/api/auth", authRoutes);
+app.use("/api/vehicles", vehicleRoutes);
 app.get("/", (_, res) => {
   res.json({
     success: true,
     message: "Incubyte Car Dealership API",
   });
 });
+
 app.use(errorHandler);
+
+
 
 export default app;
