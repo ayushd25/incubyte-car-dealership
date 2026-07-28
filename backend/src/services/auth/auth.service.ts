@@ -11,6 +11,13 @@ export const registerUser = async ({
   email,
   password,
 }: RegisterUserInput) => {
+  // Business rule
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    throw new Error("EMAIL_ALREADY_EXISTS");
+  }
+
   const user = await User.create({
     name,
     email,

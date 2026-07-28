@@ -44,4 +44,31 @@ it("should persist the user in MongoDB", async () => {
 
   expect(user?.name).toBe("Ayush");
 });
+it("should reject registration with an existing email", async () => {
+  const payload = {
+    name: "Ayush",
+    email: "duplicate@test.com",
+    password: "password123",
+  };
+
+  await request(app)
+    .post("/api/auth/register")
+    .send(payload);
+
+  const response = await request(app)
+    .post("/api/auth/register")
+    .send(payload);
+
+  expect(response.status).toBe(409);
+
+  expect(response.body.success).toBe(false);
+
+  expect(response.body.message).toBe("Email already exists");
+
+  const users = await User.find({
+    email: payload.email,
+  });
+
+  expect(users).toHaveLength(1);
+});
 });
