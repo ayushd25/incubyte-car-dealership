@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+import { AppError } from "../../errors/AppError";
 import { Vehicle } from "../../models/vehicle.model";
 
 export const createVehicle = async (
@@ -26,10 +28,63 @@ export const getVehicles = async () => {
 };
 
 export const getVehicleById = async (id: string) => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new AppError("Invalid vehicle id", 400);
+  }
+
   const vehicle = await Vehicle.findById(id);
+
+  if (!vehicle) {
+    throw new AppError("Vehicle not found", 404);
+  }
 
   return {
     success: true,
     data: vehicle,
+  };
+};
+
+export const updateVehicle = async (
+  id: string,
+  data: any
+) => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new AppError("Invalid vehicle id", 400);
+  }
+
+ const vehicle = await Vehicle.findByIdAndUpdate(
+  id,
+  data,
+  {
+    returnDocument: "after",
+    runValidators: true,
+  }
+);
+
+  if (!vehicle) {
+    throw new AppError("Vehicle not found", 404);
+  }
+
+  return {
+    success: true,
+    message: "Vehicle updated successfully",
+    data: vehicle,
+  };
+};
+
+export const deleteVehicle = async (id: string) => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new AppError("Invalid vehicle id", 400);
+  }
+
+  const vehicle = await Vehicle.findByIdAndDelete(id);
+
+  if (!vehicle) {
+    throw new AppError("Vehicle not found", 404);
+  }
+
+  return {
+    success: true,
+    message: "Vehicle deleted successfully",
   };
 };

@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../../app";
+import mongoose from "mongoose";
 
 describe("GET /api/vehicles/:id", () => {
   it("should return a vehicle by id", async () => {
@@ -42,4 +43,46 @@ describe("GET /api/vehicles/:id", () => {
 
     expect(response.body.data.make).toBe("Toyota");
   });
+  it("should return 400 for an invalid vehicle id", async () => {
+  const registerResponse = await request(app)
+    .post("/api/auth/register")
+    .send({
+      name: "Ayush",
+      email: "invalidid@test.com",
+      password: "password123",
+    });
+
+  const token = registerResponse.body.data.token;
+
+  const response = await request(app)
+    .get("/api/vehicles/invalid-id")
+    .set("Authorization", `Bearer ${token}`);
+
+  expect(response.status).toBe(400);
+
+  expect(response.body.success).toBe(false);
+});
+it("should return 404 when vehicle does not exist", async () => {
+  const registerResponse = await request(app)
+    .post("/api/auth/register")
+    .send({
+      name: "Ayush",
+      email: "notfound@test.com",
+      password: "password123",
+    });
+
+  const token = registerResponse.body.data.token;
+
+  const validId = new mongoose.Types.ObjectId().toString();
+
+  const response = await request(app)
+    .get(`/api/vehicles/${validId}`)
+    .set("Authorization", `Bearer ${token}`);
+
+  expect(response.status).toBe(404);
+
+  expect(response.body.success).toBe(false);
+
+  expect(response.body.message).toBe("Vehicle not found");
+});
 });
