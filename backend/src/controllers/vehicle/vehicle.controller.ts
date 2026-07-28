@@ -18,10 +18,17 @@ export const create = catchAsync(async (req: Request, res: Response) => {
 export const getAll = catchAsync(async (req, res) => {
   const result = await getVehicles({
     make: req.query.make as string,
+    model: req.query.model as string,
+    fuelType: req.query.fuelType as string,
+    transmission: req.query.transmission as string,
+    status: req.query.status as string,
   });
 
   return res.status(200).json(result);
 });
+
+
+
 export const getById = catchAsync(async (req, res) => {
   const id = req.params.id as string;
 

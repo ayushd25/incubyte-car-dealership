@@ -5,6 +5,7 @@ import {
   CreateVehicleDto,
   UpdateVehicleDto,
 } from "../../dto/vehicle/vehicle.dto";
+import { VehicleSearchDto } from "../../dto/vehicle/vehicleSearch.dto";
 
 export const createVehicle = async (
   data: CreateVehicleDto,
@@ -23,12 +24,28 @@ export const createVehicle = async (
 };
 
 export const getVehicles = async (
-  filters: { make?: string }
+  filters: VehicleSearchDto
 ) => {
   const query: Record<string, unknown> = {};
 
   if (filters.make) {
     query.make = filters.make;
+  }
+
+  if (filters.model) {
+    query.model = filters.model;
+  }
+
+  if (filters.fuelType) {
+    query.fuelType = filters.fuelType;
+  }
+
+  if (filters.transmission) {
+    query.transmission = filters.transmission;
+  }
+
+  if (filters.status) {
+    query.status = filters.status;
   }
 
   const vehicles = await Vehicle.find(query);
@@ -38,6 +55,8 @@ export const getVehicles = async (
     data: vehicles,
   };
 };
+
+
 export const getVehicleById = async (id: string) => {
   if (!Types.ObjectId.isValid(id)) {
     throw new AppError("Invalid vehicle id", 400);
