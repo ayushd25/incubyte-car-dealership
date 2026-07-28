@@ -1,8 +1,13 @@
 import { Router } from "express";
+
+const router = Router();
 import {
   create,
   getAll,
-  getById,update,remove,
+  getById,
+  update,
+  remove,
+  purchase,
 } from "../controllers/vehicle/vehicle.controller";
 import { authenticate } from "../middlewares/auth.middleware";
 import { validate } from "../middlewares/validate";
@@ -10,7 +15,7 @@ import {
   createVehicleSchema,
   updateVehicleSchema,
 } from "../validators/vehicle.validator";
-import router from "./auth.routes";
+
 
 router.post(
   "/",
@@ -28,6 +33,11 @@ router.patch(
   authenticate,
   validate(updateVehicleSchema),
   update
+);
+router.post(
+  "/:id/purchase",
+  authenticate,
+  purchase
 );
 
 router.delete("/:id", authenticate, remove);

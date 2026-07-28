@@ -124,3 +124,32 @@ export const deleteVehicle = async (id: string) => {
   };
 };
 
+export const purchaseVehicle = async (id: string) => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new AppError("Invalid vehicle id", 400);
+  }
+
+  const vehicle = await Vehicle.findById(id);
+
+  if (!vehicle) {
+    throw new AppError("Vehicle not found", 404);
+  }
+
+  if (vehicle.quantity <= 0) {
+    throw new AppError("Vehicle is out of stock", 400);
+  }
+
+  vehicle.quantity -= 1;
+
+  if (vehicle.quantity === 0) {
+    vehicle.status = "sold";
+  }
+
+  await vehicle.save();
+
+  return {
+    success: true,
+    message: "Vehicle purchased successfully",
+    data: vehicle,
+  };
+};

@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import {
   createVehicle,
   getVehicles,
-  getVehicleById,updateVehicle,deleteVehicle,
+  getVehicleById,
+  updateVehicle,
+  deleteVehicle,
+  purchaseVehicle,
 } from "../../services/vehicle/vehicle.service";
 import { catchAsync } from "../../utils/catchAsync";
 
@@ -50,6 +53,13 @@ export const update = catchAsync(async (req, res) => {
 
 export const remove = catchAsync(async (req, res) => {
   const result = await deleteVehicle(req.params.id as string);
+
+  return res.status(200).json(result);
+});
+
+
+export const purchase = catchAsync(async (req, res) => {
+  const result = await purchaseVehicle(req.params.id as string);
 
   return res.status(200).json(result);
 });
