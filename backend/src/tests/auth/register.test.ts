@@ -99,4 +99,21 @@ const isMatch = await bcrypt.compare(
 
 expect(isMatch).toBe(true);
 });
+it("should return a JWT token after successful registration", async () => {
+  const response = await request(app)
+    .post("/api/auth/register")
+    .send({
+      name: "Ayush",
+      email: "jwt@test.com",
+      password: "password123",
+    });
+
+  expect(response.status).toBe(201);
+
+  expect(response.body.data.user).toBeDefined();
+
+expect(response.body.data.token).toBeDefined();
+
+expect(typeof response.body.data.token).toBe("string");
+});
 });

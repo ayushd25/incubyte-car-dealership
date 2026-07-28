@@ -2,6 +2,7 @@ import express from "express";
 import authRoutes from "./routes/auth.routes";
 import cors from "cors";
 import helmet from "helmet";
+import "./config/env";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
