@@ -22,11 +22,13 @@ export const getAll = catchAsync(async (req, res) => {
     fuelType: req.query.fuelType as string,
     transmission: req.query.transmission as string,
     status: req.query.status as string,
+
+    page: Number(req.query.page) || 1,
+    limit: Number(req.query.limit) || 10,
   });
 
   return res.status(200).json(result);
 });
-
 
 
 export const getById = catchAsync(async (req, res) => {
@@ -36,6 +38,7 @@ export const getById = catchAsync(async (req, res) => {
 
   return res.status(200).json(result);
 });
+
 export const update = catchAsync(async (req, res) => {
   const result = await updateVehicle(
     req.params.id as string,
@@ -44,6 +47,7 @@ export const update = catchAsync(async (req, res) => {
 
   return res.status(200).json(result);
 });
+
 export const remove = catchAsync(async (req, res) => {
   const result = await deleteVehicle(req.params.id as string);
 

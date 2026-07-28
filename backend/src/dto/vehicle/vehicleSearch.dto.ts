@@ -4,4 +4,7 @@ export interface VehicleSearchDto {
   fuelType?: string;
   transmission?: string;
   status?: string;
+
+  page?: number;
+  limit?: number;
 }

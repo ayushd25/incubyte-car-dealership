@@ -48,14 +48,19 @@ export const getVehicles = async (
     query.status = filters.status;
   }
 
-  const vehicles = await Vehicle.find(query);
+  const page = filters.page ?? 1;
+  const limit = filters.limit ?? 10;
+  const skip = (page - 1) * limit;
+
+  const vehicles = await Vehicle.find(query)
+    .skip(skip)
+    .limit(limit);
 
   return {
     success: true,
     data: vehicles,
   };
 };
-
 
 export const getVehicleById = async (id: string) => {
   if (!Types.ObjectId.isValid(id)) {
