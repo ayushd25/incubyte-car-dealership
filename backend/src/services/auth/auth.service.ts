@@ -1,4 +1,5 @@
 import { User } from "../../models/user.model";
+import { AppError } from "../../errors/AppError";
 
 interface RegisterUserInput {
   name: string;
@@ -14,9 +15,9 @@ export const registerUser = async ({
   // Business rule
   const existingUser = await User.findOne({ email });
 
-  if (existingUser) {
-    throw new Error("EMAIL_ALREADY_EXISTS");
-  }
+if (existingUser) {
+  throw new AppError("Email already exists", 409);
+}
 
   const user = await User.create({
     name,

@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../../app";
 import { User } from "../../models/user.model";
+import bcrypt from "bcrypt";
 
 describe("POST /api/auth/register", () => {
   it("should register a new user successfully", async () => {
@@ -70,5 +71,32 @@ it("should reject registration with an existing email", async () => {
   });
 
   expect(users).toHaveLength(1);
+});
+it("should hash the password before saving the user", async () => {
+  const payload = {
+    name: "Ayush",
+    email: "secure@test.com",
+    password: "password123",
+  };
+
+  await request(app)
+    .post("/api/auth/register")
+    .send(payload);
+
+  const user = await User.findOne({
+    email: payload.email,
+  });
+
+  expect(user).not.toBeNull();
+
+  // The stored password should NOT be the original password
+  expect(user!.password).not.toBe(payload.password);
+
+const isMatch = await bcrypt.compare(
+  payload.password,
+  user!.password
+);
+
+expect(isMatch).toBe(true);
 });
 });

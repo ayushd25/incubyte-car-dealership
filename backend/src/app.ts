@@ -5,6 +5,7 @@ import helmet from "helmet";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.get("/", (_, res) => {
     message: "Incubyte Car Dealership API",
   });
 });
+app.use(errorHandler);
 
 export default app;
