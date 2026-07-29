@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../../app";
+import { User } from "../../models/user.model";
 
 describe("DELETE /api/vehicles/:id", () => {
   it("should delete a vehicle successfully", async () => {
@@ -11,7 +12,19 @@ describe("DELETE /api/vehicles/:id", () => {
         password: "password123",
       });
 
-    const token = registerResponse.body.data.token;
+    await User.findOneAndUpdate(
+  { email: "delete@test.com" },
+  { role: "admin" }
+);
+
+const loginResponse = await request(app)
+  .post("/api/auth/login")
+  .send({
+    email: "delete@test.com",
+    password: "password123",
+  });
+
+const token = loginResponse.body.data.token;
 
     const createResponse = await request(app)
       .post("/api/vehicles")

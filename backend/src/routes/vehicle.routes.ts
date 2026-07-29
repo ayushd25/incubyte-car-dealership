@@ -15,6 +15,7 @@ import {
   createVehicleSchema,
   updateVehicleSchema,
 } from "../validators/vehicle.validator";
+import { authorize } from "../middlewares/authorize.middleware";
 
 
 router.post(
@@ -42,9 +43,15 @@ router.post(
 router.post(
   "/:id/restock",
   authenticate,
+  authorize("admin"),
   restock
 );
 
-router.delete("/:id", authenticate, remove);
+router.delete(
+  "/:id",
+  authenticate,
+  authorize("admin"),
+  remove
+);
 
 export default router;

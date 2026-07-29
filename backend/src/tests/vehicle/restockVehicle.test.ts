@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../../app";
+import { User } from "../../models/user.model";
 
 describe("POST /api/vehicles/:id/restock", () => {
   it("should restock a sold vehicle", async () => {
@@ -11,7 +12,19 @@ describe("POST /api/vehicles/:id/restock", () => {
         password: "password123",
       });
 
-    const token = registerResponse.body.data.token;
+    await User.findOneAndUpdate(
+  { email: "restock@test.com" },
+  { role: "admin" }
+);
+
+const loginResponse = await request(app)
+  .post("/api/auth/login")
+  .send({
+    email: "restock@test.com",
+    password: "password123",
+  });
+
+const token = loginResponse.body.data.token;
 
     const createResponse = await request(app)
       .post("/api/vehicles")
@@ -57,7 +70,19 @@ describe("POST /api/vehicles/:id/restock", () => {
       password: "password123",
     });
 
-  const token = registerResponse.body.data.token;
+  await User.findOneAndUpdate(
+  { email: "restock-invalid@test.com" },
+  { role: "admin" }
+);
+
+const loginResponse = await request(app)
+  .post("/api/auth/login")
+  .send({
+    email: "restock-invalid@test.com",
+    password: "password123",
+  });
+
+const token = loginResponse.body.data.token;
 
   const createResponse = await request(app)
     .post("/api/vehicles")
