@@ -11,6 +11,14 @@ import {
 } from "lucide-react";
 
 import type { Vehicle } from "../types/vehicle";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
+
+import {
+  deleteVehicle,
+  restockVehicle,
+} from "../services/vehicle.service";
 
 interface Props {
   vehicle: Vehicle;
@@ -24,6 +32,8 @@ export default function VehicleCard({
   onPurchase,
 }: Props) {
     
+    const navigate = useNavigate();
+
     
 const images = [
   "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=900",
@@ -154,38 +164,49 @@ const image =
             : "Purchase"}
         </button>
 
-        {isAdmin && (
-          <div className="grid grid-cols-3 gap-3">
+       {isAdmin && (
+  <div className="mt-4 grid grid-cols-3 gap-2">
+    <button
+      onClick={() =>
+        navigate(`/admin/edit/${vehicle._id}`)
+      }
+      className="rounded-xl bg-amber-500 py-2 text-white hover:bg-amber-600"
+    >
+      Edit
+    </button>
 
-            <button
-              className="rounded-xl bg-amber-500 py-2 text-white transition hover:bg-amber-600"
-            >
-              <Pencil
-                size={18}
-                className="mx-auto"
-              />
-            </button>
+    <button
+      onClick={() => {
+        const qty = prompt("Restock quantity");
 
-            <button
-              className="rounded-xl bg-green-600 py-2 text-white transition hover:bg-green-700"
-            >
-              <Boxes
-                size={18}
-                className="mx-auto"
-              />
-            </button>
+        if (!qty) return;
 
-            <button
-              className="rounded-xl bg-red-600 py-2 text-white transition hover:bg-red-700"
-            >
-              <Trash2
-                size={18}
-                className="mx-auto"
-              />
-            </button>
+        restockVehicle(vehicle._id, Number(qty)).then(() => {
+          toast.success("Vehicle Restocked");
+          window.location.reload();
+        });
+      }}
+      className="rounded-xl bg-green-600 py-2 text-white hover:bg-green-700"
+    >
+      Restock
+    </button>
 
-          </div>
-        )}
+    <button
+      onClick={async () => {
+        if (!confirm("Delete this vehicle?")) return;
+
+        await deleteVehicle(vehicle._id);
+
+        toast.success("Vehicle Deleted");
+
+        window.location.reload();
+      }}
+      className="rounded-xl bg-red-600 py-2 text-white hover:bg-red-700"
+    >
+      Delete
+    </button>
+  </div>
+)}
 
       </div>
 

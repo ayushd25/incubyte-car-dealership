@@ -48,18 +48,25 @@ export const getVehicles = async (
     query.status = filters.status;
   }
 
-  const page = filters.page ?? 1;
-  const limit = filters.limit ?? 10;
-  const skip = (page - 1) * limit;
+ const page = filters.page ?? 1;
+const limit = filters.limit ?? 10;
+const skip = (page - 1) * limit;
 
-  const vehicles = await Vehicle.find(query)
-    .skip(skip)
-    .limit(limit);
+// TEMP DEBUG
+console.log("Mongo URI:", process.env.MONGODB_URI);
+console.log("Vehicle Count:", await Vehicle.countDocuments());
+console.log("Query:", query);
 
-  return {
-    success: true,
-    data: vehicles,
-  };
+const vehicles = await Vehicle.find(query)
+  .skip(skip)
+  .limit(limit);
+
+console.log("Vehicles Found:", vehicles);
+
+return {
+  success: true,
+  data: vehicles,
+};
 };
 
 export const getVehicleById = async (id: string) => {

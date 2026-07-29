@@ -13,6 +13,8 @@ import {
 } from "../services/vehicle.service";
 
 import type { Vehicle } from "../types/vehicle";
+import { Link } from "react-router-dom";
+
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -100,6 +102,20 @@ export default function Dashboard() {
           search={search}
           setSearch={setSearch}
         />
+        <div className="mb-6 flex items-center justify-between">
+  <h1 className="text-4xl font-bold">
+    Available Vehicles
+  </h1>
+
+  {user?.role === "admin" && (
+    <Link
+      to="/admin/add"
+      className="rounded-xl bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
+    >
+      + Add Vehicle
+    </Link>
+  )}
+</div>
 
         <div className="mt-10 flex items-center justify-between">
 
