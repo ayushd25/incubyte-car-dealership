@@ -5,7 +5,9 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function AdminRoute({ children }: Props) {
+export default function AdminRoute({
+  children,
+}: Props) {
   const { token, user } = useAuth();
 
   if (!token) {

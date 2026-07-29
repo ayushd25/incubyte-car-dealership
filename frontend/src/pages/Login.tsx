@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
+import { CarFront, Mail, Lock } from "lucide-react";
 
 import { loginSchema } from "../validators/login.schema";
 import type { LoginFormData } from "../validators/login.schema";
@@ -12,7 +13,6 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-
   const [loading, setLoading] = useState(false);
 
   const {
@@ -26,94 +26,94 @@ export default function Login() {
   async function onSubmit(values: LoginFormData) {
     try {
       setLoading(true);
-
       const res = await loginUser(values);
-
       login(res.data.token, res.data.user);
-
       toast.success(res.message);
-
       navigate("/");
     } catch (err: any) {
-      toast.error(
-        err?.response?.data?.message ??
-          "Unable to login"
-      );
+      toast.error(err?.response?.data?.message ?? "Unable to login");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-5">
-
-      <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl p-8">
-
-        <h1 className="text-4xl font-bold text-center">
-          🚗 Incubyte Motors
-        </h1>
-
-        <p className="text-gray-500 text-center mt-2 mb-8">
-          Sign in to continue
-        </p>
-
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-5"
-        >
-          <div>
-            <label>Email</label>
-
-            <input
-              {...register("email")}
-              className="mt-2 w-full rounded-lg border p-3"
-              placeholder="john@example.com"
-            />
-
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
+    <div className="min-h-screen flex items-center justify-center px-4 bg-slate-50">
+      <div className="w-full max-w-md animate-fade-in">
+        <div className="text-center mb-8">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white shadow-lg mb-4">
+            <CarFront size={24} />
           </div>
+          <h1 className="text-2xl font-bold text-slate-900">Incubyte Motors</h1>
+          <p className="text-sm text-slate-500 mt-1">Sign in to your account</p>
+        </div>
 
-          <div>
-            <label>Password</label>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <input
+                  {...register("email")}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                  placeholder="john@example.com"
+                />
+              </div>
+              {errors.email && (
+                <p className="mt-1.5 text-xs text-rose-600">{errors.email.message}</p>
+              )}
+            </div>
 
-            <input
-              type="password"
-              {...register("password")}
-              className="mt-2 w-full rounded-lg border p-3"
-              placeholder="********"
-            />
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <input
+                  type="password"
+                  {...register("password")}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                  placeholder="********"
+                />
+              </div>
+              {errors.password && (
+                <p className="mt-1.5 text-xs text-rose-600">{errors.password.message}</p>
+              )}
+            </div>
 
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+            <div className="flex items-center justify-end">
+              <button
+                type="button"
+                className="text-xs text-slate-500 hover:text-slate-700 transition-colors"
+              >
+                Forgot password?
+              </button>
+            </div>
 
-          <button
-            disabled={loading}
-            className="w-full rounded-lg bg-blue-600 py-3 text-white font-semibold hover:bg-blue-700 transition"
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+            <button
+              disabled={loading}
+              className="w-full rounded-xl bg-slate-900 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 active:scale-[0.98] disabled:opacity-70"
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
 
-        <p className="text-center mt-6">
-          New here?{" "}
-          <Link
-            className="text-blue-600 font-semibold"
-            to="/register"
-          >
-            Create account
-          </Link>
-        </p>
-
+          <p className="text-center text-sm text-slate-600 mt-6">
+            New here?{" "}
+            <Link
+              className="font-semibold text-blue-600 hover:underline"
+              to="/register"
+            >
+              Create account
+            </Link>
+          </p>
+        </div>
       </div>
-
     </div>
   );
 }

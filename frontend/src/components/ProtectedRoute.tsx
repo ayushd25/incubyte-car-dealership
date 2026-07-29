@@ -5,7 +5,9 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function ProtectedRoute({ children }: Props) {
+export default function ProtectedRoute({
+  children,
+}: Props) {
   const { token } = useAuth();
 
   if (!token) {
