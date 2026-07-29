@@ -26,10 +26,17 @@ router.post(
 );
 
 router.get("/", authenticate, getAll);
-
+router.get("/search", authenticate, getAll);
 router.get("/:id", authenticate, getById);
 
+
 router.patch(
+  "/:id",
+  authenticate,
+  validate(updateVehicleSchema),
+  update
+);
+router.put(
   "/:id",
   authenticate,
   validate(updateVehicleSchema),
