@@ -1,90 +1,193 @@
+import {
+  Calendar,
+  Fuel,
+  Gauge,
+  Palette,
+  ShoppingCart,
+  Settings,
+  Trash2,
+  Pencil,
+  Boxes,
+} from "lucide-react";
+
 import type { Vehicle } from "../types/vehicle";
 
 interface Props {
   vehicle: Vehicle;
-  onPurchase: (id: string) => void;
   isAdmin: boolean;
+  onPurchase: (id: string) => void;
 }
 
 export default function VehicleCard({
   vehicle,
-  onPurchase,
   isAdmin,
+  onPurchase,
 }: Props) {
+    
+    
+const images = [
+  "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=900",
+  "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=900",
+  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900",
+  "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=900",
+];
+
+const image =
+  images[
+    vehicle.make.length %
+      images.length
+  ];
+
+  const badgeColor = {
+    available:
+      "bg-green-100 text-green-700",
+
+    reserved:
+      "bg-yellow-100 text-yellow-700",
+
+    sold:
+      "bg-red-100 text-red-700",
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
+    <div className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-xl">
 
-      <div className="flex justify-between">
+      {/* Image Placeholder */}
 
-        <div>
-          <h2 className="text-2xl font-bold">
-            {vehicle.make} {vehicle.model}
-          </h2>
+      <div className="h-56 overflow-hidden">
+  <img
+    src={image}
+    alt={vehicle.make}
+    className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+  />
+</div>
 
-          <p className="text-gray-500">
-            {vehicle.category}
-          </p>
-        </div>
+      <div className="space-y-5 p-6">
 
-        <span className="font-bold text-blue-600">
-          £{vehicle.price.toLocaleString()}
-        </span>
+        <div className="flex justify-between">
 
-      </div>
+          <div>
 
-      <div className="mt-5 space-y-2 text-gray-600">
+            <h2 className="text-2xl font-bold">
+              {vehicle.make}
+            </h2>
 
-        <p>Year : {vehicle.year}</p>
+            <p className="text-slate-500">
+              {vehicle.model}
+            </p>
 
-        <p>Mileage : {vehicle.mileage.toLocaleString()} km</p>
+          </div>
 
-        <p>Fuel : {vehicle.fuelType}</p>
+          <div className="text-right">
 
-        <p>Transmission : {vehicle.transmission}</p>
+            <h3 className="text-xl font-bold text-blue-600">
+              £{vehicle.price.toLocaleString()}
+            </h3>
 
-        <p>Colour : {vehicle.color}</p>
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                badgeColor[vehicle.status]
+              }`}
+            >
+              {vehicle.status}
+            </span>
 
-        <p>
-          Quantity :
-          <span className="font-semibold">
-            {" "}
-            {vehicle.quantity}
-          </span>
-        </p>
-
-      </div>
-
-      <button
-        disabled={vehicle.quantity === 0}
-        onClick={() => onPurchase(vehicle._id)}
-        className={`mt-6 w-full rounded-lg py-3 text-white font-semibold ${
-          vehicle.quantity === 0
-            ? "bg-gray-400"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
-      >
-        {vehicle.quantity === 0
-          ? "Out of Stock"
-          : "Purchase"}
-      </button>
-
-      {isAdmin && (
-        <div className="mt-4 flex gap-2">
-
-          <button className="flex-1 rounded-lg bg-yellow-500 py-2 text-white">
-            Edit
-          </button>
-
-          <button className="flex-1 rounded-lg bg-red-600 py-2 text-white">
-            Delete
-          </button>
-
-          <button className="flex-1 rounded-lg bg-green-600 py-2 text-white">
-            Restock
-          </button>
+          </div>
 
         </div>
-      )}
+
+        <div className="grid grid-cols-2 gap-3 text-sm text-slate-600">
+
+          <div className="flex items-center gap-2">
+            <Calendar size={16} />
+            {vehicle.year}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Gauge size={16} />
+            {vehicle.mileage.toLocaleString()} km
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Fuel size={16} />
+            {vehicle.fuelType}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Settings size={16} />
+            {vehicle.transmission}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Palette size={16} />
+            {vehicle.color}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Boxes size={16} />
+            Qty : {vehicle.quantity}
+          </div>
+
+        </div>
+
+        <div className="rounded-xl bg-slate-100 px-4 py-3 text-sm font-medium">
+          {vehicle.category}
+        </div>
+
+        <button
+          disabled={
+            vehicle.quantity === 0
+          }
+          onClick={() =>
+            onPurchase(vehicle._id)
+          }
+          className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-semibold transition ${
+            vehicle.quantity === 0
+              ? "cursor-not-allowed bg-slate-300 text-slate-500"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}
+        >
+          <ShoppingCart size={18} />
+
+          {vehicle.quantity === 0
+            ? "Out of Stock"
+            : "Purchase"}
+        </button>
+
+        {isAdmin && (
+          <div className="grid grid-cols-3 gap-3">
+
+            <button
+              className="rounded-xl bg-amber-500 py-2 text-white transition hover:bg-amber-600"
+            >
+              <Pencil
+                size={18}
+                className="mx-auto"
+              />
+            </button>
+
+            <button
+              className="rounded-xl bg-green-600 py-2 text-white transition hover:bg-green-700"
+            >
+              <Boxes
+                size={18}
+                className="mx-auto"
+              />
+            </button>
+
+            <button
+              className="rounded-xl bg-red-600 py-2 text-white transition hover:bg-red-700"
+            >
+              <Trash2
+                size={18}
+                className="mx-auto"
+              />
+            </button>
+
+          </div>
+        )}
+
+      </div>
 
     </div>
   );

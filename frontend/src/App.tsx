@@ -10,6 +10,7 @@ import AdminRoute from "./components/AdminRoute";
 
 export default function App() {
   return (
+    <div className="min-h-screen bg-slate-100">
     <Routes>
       <Route path="/login" element={<Login />} />
 
@@ -43,6 +44,6 @@ export default function App() {
       />
 
       <Route path="*" element={<NotFound />} />
-    </Routes>
+    </Routes></div>
   );
 }

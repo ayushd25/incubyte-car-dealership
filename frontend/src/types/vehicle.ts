@@ -3,7 +3,7 @@ export interface Vehicle {
   make: string;
   model: string;
   year: number;
-  category: string;
+  category: "SUV" | "Sedan" | "Hatchback" | "Truck" | "Coupe" | "Convertible";
   price: number;
   mileage: number;
   fuelType: string;
@@ -16,6 +16,5 @@ export interface Vehicle {
 
 export interface VehicleResponse {
   success: boolean;
-  message?: string;
   data: Vehicle[];
 }
