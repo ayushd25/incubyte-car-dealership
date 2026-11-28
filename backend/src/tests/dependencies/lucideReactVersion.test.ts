@@ -67,7 +67,7 @@ function isAtLeast(
 }
 
 describe("lucide-react icon release", () => {
-  it("pins the 1.81.0 icon set used by the frontend call sites", () => {
+  it("pins the 1.83.0 icon set used by the frontend call sites", () => {
     const frontendPackage = readJson<PackageJson>("frontend/package.json");
     const frontendLock = readJson<PackageLock>("frontend/package-lock.json");
 
@@ -76,12 +76,12 @@ describe("lucide-react icon release", () => {
       ...frontendPackage.devDependencies,
     }["lucide-react"];
 
-    expect(isAtLeast(declared, [1, 81, 0])).toBe(true);
+    expect(isAtLeast(declared, [1, 83, 0])).toBe(true);
 
     const locked = frontendLock.packages?.["node_modules/lucide-react"];
 
-    expect(isAtLeast(locked?.version, [1, 81, 0])).toBe(true);
-    expect(locked?.resolved).toContain("lucide-react-1.81.0.tgz");
+    expect(isAtLeast(locked?.version, [1, 83, 0])).toBe(true);
+    expect(locked?.resolved).toContain("lucide-react-1.83.0.tgz");
     expect(locked?.integrity).toBeTruthy();
 
     for (const callSite of ICON_CALL_SITES) {
